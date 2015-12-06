@@ -26,8 +26,8 @@ namespace HAL9000
                 {
                     var somecard = (from x in this.Cards
                         where
-                            x.Suit == context.FirstPlayedCard.Suit && x.GetValue() > context.FirstPlayedCard.GetValue()
-                        orderby x.GetValue()
+                            x.Suit == oponentCardSuit && x.GetValue() > oponentCardValue
+                                    orderby x.GetValue()
                         select x).FirstOrDefault();
                     if (somecard != null)
                     {
@@ -48,40 +48,26 @@ namespace HAL9000
             {
                 if (Have20Or40(queensFor20Or40))
                 {
-                    if (queensFor20Or40.Count > 1)
-                    {
-                        if (queensFor20Or40.Any(x => x.Suit == context.TrumpCard.Suit))
-                        {
-                            turnCard = queensFor20Or40.First(x => x.Suit == context.TrumpCard.Suit);
-                        }
-                        else
-                        {
-                            turnCard = queensFor20Or40.First();
-                        }
-                    }
-                    else
-                    {
-                        turnCard = queensFor20Or40.First();
-                    }
+                        turnCard = queensFor20Or40;
                 }
             }
 
             if (!context.IsFirstPlayerTurn)
             {
-                if (context.FirstPlayedCard.GetValue() >= Constants.NIGHVALUETOOPONENTSCARD)
+                if (oponentCardValue >= Constants.NIGHVALUETOOPONENTSCARD)
                 {
                     var somecard = (from x in this.Cards
                                     where
-                                        x.Suit == context.FirstPlayedCard.Suit && x.GetValue() > context.FirstPlayedCard.GetValue()
+                                        x.Suit == oponentCardSuit && x.GetValue() > oponentCardValue
                                     orderby x.GetValue()
                                     select x).FirstOrDefault();
                     if (somecard == null)
                     {
                         if (TrumpsInCurrentHand(context) >= Constants.COUNTTRUMPMORETHANCANGETWITHTRUMP)
                         {
-                            if (HaveCardInHand(CardType.Jack, context.TrumpCard.Suit))
+                            if (HaveCardInHand(CardType.Jack, trumpSuit))
                             {
-                                var cardTrum = GetCardFromHand(CardType.Jack, context.TrumpCard.Suit);
+                                var cardTrum = GetCardFromHand(CardType.Jack, trumpSuit);
                                 turnCard = cardTrum;
                             }
                         }
@@ -92,7 +78,7 @@ namespace HAL9000
                 {
                     var somecard = (from x in this.Cards
                                     where
-                                        x.Suit == context.FirstPlayedCard.Suit && x.GetValue() > context.FirstPlayedCard.GetValue()
+                                        x.Suit == oponentCardSuit && x.GetValue() > oponentCardValue
                                     orderby x.GetValue()
                                     select x).FirstOrDefault();
                     if (somecard != null)
