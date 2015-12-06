@@ -1,4 +1,7 @@
-﻿namespace HAL9000
+﻿using System;
+using System.Linq;
+
+namespace HAL9000
 {
     using Santase.Logic.Players;
     using System.Collections.Generic;
@@ -8,16 +11,18 @@
     public partial class HAL9000: BasePlayer
     {
         private readonly string name = "HAL9000";
-
+        private ICollection<Card> possibleCardsToPlay = new List<Card>();
 
         public override PlayerAction GetTurn(PlayerTurnContext context)
         {
+            possibleCardsToPlay = this.PlayerActionValidator.GetPossibleCardsToPlay(context, this.Cards);
+
             if (this.PlayerActionValidator.IsValid(PlayerAction.ChangeTrump(), context, this.Cards))
             {
                 return this.ChangeTrump(context.TrumpCard);
             }
 
-            if (this.CloseGame(context))
+            if (this.CloseGame(context, possibleCardsToPlay))
             {
                 return this.CloseGame();
             }
@@ -30,11 +35,17 @@
             get { return this.name; }
         }
 
-        //TODO: Create closing decision making logic.
-        private bool CloseGame(PlayerTurnContext context)
+        //TODO: Add stats and weight logic to the closing game logic.
+        private bool CloseGame(PlayerTurnContext context, ICollection<Card> currentPossibleCardsToPlay)
         {
-            
-            return true;
+            if (this.PlayerActionValidator.IsValid(PlayerAction.CloseGame(), context, this.Cards))
+            {
+                if (TrumpsInCurrentHand(context) >= 2 && (CurrentHandPoints(context, currentPossibleCardsToPlay) >=50))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
