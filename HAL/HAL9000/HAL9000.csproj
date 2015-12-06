@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Santase.Logic, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>D:\Telerik\SDA\SantaseGameEngine-master\SantaseGameEngine-master\Source\packages\SantaseGameEngine.1.1.0\lib\Santase.Logic.dll</HintPath>
+      <HintPath>..\..\..\..\..\Downloads\SantaseGameEngine-master\Source\packages\SantaseGameEngine.1.1.0\lib\Santase.Logic.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="HAL9000.cs" />
     <Compile Include="HALLogic\Common.cs" />
+    <Compile Include="HALLogic\HALLGameLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

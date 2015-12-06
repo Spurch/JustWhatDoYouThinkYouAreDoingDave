@@ -40,7 +40,7 @@ namespace HAL9000
         {
             if (this.PlayerActionValidator.IsValid(PlayerAction.CloseGame(), context, this.Cards))
             {
-                if (TrumpsInCurrentHand(context) >= 2 && (CurrentHandPoints(context, currentPossibleCardsToPlay) >=50))
+                if (TrumpsInCurrentHand(context) >= 2 && (CurrentHandPoints(context) >=50))
                 {
                     return true;
                 }
