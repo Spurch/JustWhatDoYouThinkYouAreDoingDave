@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\NaHALMagiqta.cs" />
     <Compile Include="HAL9000.cs" />
     <Compile Include="HALLogic\Common.cs" />
     <Compile Include="HALLogic\Constants.cs" />

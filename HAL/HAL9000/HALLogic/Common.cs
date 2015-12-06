@@ -1,4 +1,6 @@
-﻿namespace HAL9000
+﻿using HAL9000.Extensions;
+
+namespace HAL9000
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -9,6 +11,11 @@
     public partial class HAL9000
     {
         private Dictionary<CardSuit, List<Card>> usedCards = new Dictionary<CardSuit, List<Card>>();
+
+        public Dictionary<CardSuit, List<Card>> UsedCards
+        {
+            get { return usedCards; }
+        }
 
         private void UpdateUsedCardsCollections(Card playedCard)
         {
@@ -108,7 +115,7 @@
             var hasNineOfTrump = from x in this.Cards
                                  where x.Type == CardType.Nine && x.Suit == context.TrumpCard.Suit
                                  select x;
-            if (hasNineOfTrump.Count() > 0)
+            if (hasNineOfTrump.Any())
             {
                 return true;
             }
@@ -123,6 +130,11 @@
         private Card GetCardFromHand(CardType type, CardSuit suit)
         {
             return this.Cards.First(x => x.Type == type && x.Suit == suit);
+        }
+
+        private bool HaveLonely10FromSuit(CardSuit suit)
+        {
+            return this.Cards.Any(x => x.Type == CardType.Ten && x.Suit == suit);
         }
     }
 }
