@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Santase.Logic, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\Downloads\SantaseGameEngine-master\Source\packages\SantaseGameEngine.1.1.0\lib\Santase.Logic.dll</HintPath>
+      <HintPath>D:\Telerik\SDA\SantaseGameEngine-master\SantaseGameEngine-master\Source\packages\SantaseGameEngine.1.1.0\lib\Santase.Logic.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -51,7 +51,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
