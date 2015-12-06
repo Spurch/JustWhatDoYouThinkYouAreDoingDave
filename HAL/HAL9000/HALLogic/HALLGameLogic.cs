@@ -86,6 +86,10 @@ namespace HAL9000
                         turnCard = somecard;
                     }
                 }
+                if ( oponentCardValue < Constants.LESSVALUETHATWECANGETWITHTEN && oponentCardSuit != trumpSuit)
+                {
+                    turnCard = GetCardFromHand(CardType.Ten, oponentCardSuit);
+                }
             }
             return PlayCard(turnCard);
         }
