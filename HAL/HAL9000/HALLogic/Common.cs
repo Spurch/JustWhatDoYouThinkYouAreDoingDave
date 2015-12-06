@@ -1,4 +1,6 @@
-﻿namespace HAL9000
+﻿using HAL9000.Extensions;
+
+namespace HAL9000
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -9,6 +11,11 @@
     public partial class HAL9000
     {
         private Dictionary<CardSuit, List<Card>> usedCards = new Dictionary<CardSuit, List<Card>>();
+
+        public Dictionary<CardSuit, List<Card>> UsedCards
+        {
+            get { return usedCards; }
+        }
 
         private void UpdateUsedCardsCollections(Card playedCard)
         {
