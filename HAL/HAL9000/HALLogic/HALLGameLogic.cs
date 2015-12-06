@@ -86,7 +86,7 @@ namespace HAL9000
                         turnCard = somecard;
                     }
                 }
-                if ( oponentCardValue < Constants.LESSVALUETHATWECANGETWITHTEN && oponentCardSuit != trumpSuit)
+                if (HaveLonely10FromSuit(oponentCardSuit) && oponentCardValue < Constants.LESSVALUETHATWECANGETWITHTEN && oponentCardSuit != trumpSuit)
                 {
                     turnCard = GetCardFromHand(CardType.Ten, oponentCardSuit);
                 }
