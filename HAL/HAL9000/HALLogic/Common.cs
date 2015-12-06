@@ -110,5 +110,15 @@
             }
             return false;
         }
+
+        private bool HaveCardInHand(CardType type, CardSuit suit)
+        {
+            return this.Cards.Select(x => x.Type == type && x.Suit == suit).FirstOrDefault();
+        }
+
+        private Card GetCardFromHand(CardType type, CardSuit suit)
+        {
+            return this.Cards.First(x => x.Type == type && x.Suit == suit);
+        }
     }
 }
