@@ -8,7 +8,7 @@
 
     public partial class HAL9000
     {
-        private Dictionary<CardSuit, List<Card>> usedCards = new Dictionary<CardSuit, List<Card>>(); 
+        private Dictionary<CardSuit, List<Card>> usedCards = new Dictionary<CardSuit, List<Card>>();
 
         private void UpdateUsedCardsCollections(Card playedCard)
         {
@@ -38,21 +38,19 @@
         private int CurrentHandPoints(PlayerTurnContext context)
         {
             var currentTrump = context.TrumpCard.Suit;
-            var queens = this.CheckForTwentyOrForty(context);
+            var queen = this.CheckForTwentyOrForty(context);
             int result = 0;
-            if (queens.Count > 0)
+            if (queen != null)
             {
-                foreach (var queen in queens)
+                if (queen.Suit == currentTrump)
                 {
-                    if (queen.Suit == currentTrump)
-                    {
-                        result += 40;
-                    }
-                    else
-                    {
-                        result += 20;
-                    }
+                    result += 40;
                 }
+                else
+                {
+                    result += 20;
+                }
+
                 result +=
                     this.Cards.Where(x => x.Type != CardType.King && x.Type != CardType.Queen)
                         .Select(y => y.Type)
@@ -70,29 +68,35 @@
         }
 
         /// <summary>
-        /// Method that checks if we can announce 20 or 40 and returns a list of the queens that we
-        /// can use for possible announces.
+        /// Method that checks if we can announce 20 or 40 and returns a queen that we
+        /// can use for a possible announce.
         /// </summary>
         /// <param name="context">The current PlayerTurnContext context</param>
         /// <returns>A list of type Card that contains all possible queens to announce - if any, else returns an empty list.</returns>
-        private List<Card> CheckForTwentyOrForty(PlayerTurnContext context)
+        private Card CheckForTwentyOrForty(PlayerTurnContext context)
         {
-            var queensList = new List<Card>();
             foreach (var currentCard in this.Cards)
             {
                 if (currentCard.Type == CardType.Queen
-                    && (this.AnnounceValidator.GetPossibleAnnounce(this.Cards, currentCard, context.TrumpCard) == Announce.Twenty
-                    || this.AnnounceValidator.GetPossibleAnnounce(this.Cards, currentCard, context.TrumpCard) == Announce.Forty))
+                    && this.AnnounceValidator.GetPossibleAnnounce(
+                        this.Cards, currentCard, context.TrumpCard) == Announce.Forty)
                 {
-                    queensList.Add(currentCard);
+                    return currentCard;
+                }
+                if (currentCard.Type == CardType.Queen
+                         &&
+                         this.AnnounceValidator.GetPossibleAnnounce(
+                             this.Cards, currentCard, context.TrumpCard) == Announce.Twenty)
+                {
+                    return currentCard;
                 }
             }
-            return queensList;
+            return null;
         }
 
-        private bool Have20Or40(ICollection<Card> listOfQueens)
+        private bool Have20Or40(Card listOfQueens)
         {
-            if (listOfQueens.Count == 0)
+            if (listOfQueens == null)
             {
                 return false;
             }
