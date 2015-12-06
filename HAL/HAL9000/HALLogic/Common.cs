@@ -1,6 +1,4 @@
-﻿using HAL9000.Extensions;
-
-namespace HAL9000
+﻿namespace HAL9000
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -134,7 +132,13 @@ namespace HAL9000
 
         private bool HaveLonely10FromSuit(CardSuit suit)
         {
-            return this.Cards.Any(x => x.Type == CardType.Ten && x.Suit == suit);
+            var has10OfSuit = this.Cards.Any(x => x.Type == CardType.Ten && x.Suit == suit);
+            var hasOtherCardsOfSuit = this.Cards.Count(x => x.Suit == suit);
+            if (has10OfSuit && hasOtherCardsOfSuit == 1)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

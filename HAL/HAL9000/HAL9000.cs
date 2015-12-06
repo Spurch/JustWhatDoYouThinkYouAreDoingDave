@@ -57,5 +57,15 @@ namespace HAL9000
             }
             return false;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        public override void EndTurn(PlayerTurnContext context)
+        {
+            this.UpdateUsedCardsCollections(context.FirstPlayedCard);
+            this.UpdateUsedCardsCollections(context.SecondPlayedCard);
+        }
     }
 }
