@@ -8,43 +8,15 @@
 
     public partial class HAL9000
     {
-        private List<Card> usedSpades = new List<Card>();
-        private List<Card> usedDiamonds = new List<Card>();
-        private List<Card> usedHearts = new List<Card>();
-        private List<Card> usedClubs = new List<Card>();
+        private Dictionary<CardSuit, List<Card>> usedCards = new Dictionary<CardSuit, List<Card>>(); 
 
-        private void UpdateUsedCardsCollections(Card firstPlayerCard, Card secondPlayerCard)
+        private void UpdateUsedCardsCollections(Card playedCard)
         {
-            switch (firstPlayerCard.Suit)
+            if (!usedCards.ContainsKey(playedCard.Suit))
             {
-                case CardSuit.Spade:
-                    usedSpades.Add(firstPlayerCard);
-                    break;
-                case CardSuit.Diamond:
-                    usedDiamonds.Add(firstPlayerCard);
-                    break;
-                case CardSuit.Heart:
-                    usedHearts.Add(firstPlayerCard);
-                    break;
-                case CardSuit.Club:
-                    usedClubs.Add(firstPlayerCard);
-                    break;
+                usedCards[playedCard.Suit] = new List<Card>();
             }
-            switch (secondPlayerCard.Suit)
-            {
-                case CardSuit.Spade:
-                    usedSpades.Add(secondPlayerCard);
-                    break;
-                case CardSuit.Diamond:
-                    usedDiamonds.Add(secondPlayerCard);
-                    break;
-                case CardSuit.Heart:
-                    usedHearts.Add(secondPlayerCard);
-                    break;
-                case CardSuit.Club:
-                    usedClubs.Add(secondPlayerCard);
-                    break;
-            }
+            usedCards[playedCard.Suit].Add(playedCard);
         }
 
         /// <summary>
@@ -102,7 +74,6 @@
         /// can use for possible announces.
         /// </summary>
         /// <param name="context">The current PlayerTurnContext context</param>
-        /// <param name="currentPossibleCardsToPlay">The current possible cards to play.</param>
         /// <returns>A list of type Card that contains all possible queens to announce - if any, else returns an empty list.</returns>
         private List<Card> CheckForTwentyOrForty(PlayerTurnContext context)
         {
