@@ -1,8 +1,7 @@
-﻿using System.Linq;
-using System.Runtime.Remoting.Messaging;
-namespace HAL9000
+﻿namespace HAL9000
 {
     using System.Collections.Generic;
+    using System.Linq;
     using Santase.Logic;
     using Santase.Logic.Cards;
     using Santase.Logic.Players;
@@ -128,6 +127,18 @@ namespace HAL9000
                 return false;
             }
             return true;
+        }
+
+        private bool CanTryToChangeTrump(ICollection<Card> currentHand, PlayerTurnContext context)
+        {
+            var hasNineOfTrump = from x in currentHand
+                where x.Type == CardType.Nine && x.Suit == context.TrumpCard.Suit
+                select x;
+            if (hasNineOfTrump.Count() > 0)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
