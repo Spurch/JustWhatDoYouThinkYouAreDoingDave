@@ -33,16 +33,16 @@
             switch (secondPlayerCard.Suit)
             {
                 case CardSuit.Spade:
-                    usedSpades.Add(secondPlayerCard);
+                    usedSpades.Add(firstPlayerCard);
                     break;
                 case CardSuit.Diamond:
-                    usedDiamonds.Add(secondPlayerCard);
+                    usedDiamonds.Add(firstPlayerCard);
                     break;
                 case CardSuit.Heart:
-                    usedHearts.Add(secondPlayerCard);
+                    usedHearts.Add(firstPlayerCard);
                     break;
                 case CardSuit.Club:
-                    usedClubs.Add(secondPlayerCard);
+                    usedClubs.Add(firstPlayerCard);
                     break;
             }
         }
@@ -62,11 +62,12 @@
         /// This method gets into consideration possible announces of 20 or 40.
         /// </summary>
         /// <param name="context">The current PlayerTurnContext</param>
+        /// <param name="currentPossibleCardsToPlay">The current collection of possible cards to play.</param>
         /// <returns>The current amount of points we are holding.</returns>
-        private int CurrentHandPoints(PlayerTurnContext context)
+        private int CurrentHandPoints(PlayerTurnContext context, ICollection<Card> currentPossibleCardsToPlay)
         {
             var currentTrump = context.TrumpCard.Suit;
-            var queens = this.CheckForTwentyOrForty(context);
+            var queens = this.CheckForTwentyOrForty(context, currentPossibleCardsToPlay);
             int result = 0;
             if (queens.Count > 0)
             {
@@ -104,10 +105,10 @@
         /// <param name="context">The current PlayerTurnContext context</param>
         /// <param name="currentPossibleCardsToPlay">The current possible cards to play.</param>
         /// <returns>A list of type Card that contains all possible queens to announce - if any, else returns an empty list.</returns>
-        private List<Card> CheckForTwentyOrForty(PlayerTurnContext context)
+        private List<Card> CheckForTwentyOrForty(PlayerTurnContext context, ICollection<Card> currentPossibleCardsToPlay)
         {
             var queensList = new List<Card>();
-            foreach (var currentCard in this.Cards)
+            foreach (var currentCard in currentPossibleCardsToPlay)
             {
                 if (currentCard.Type == CardType.Queen
                     && (this.AnnounceValidator.GetPossibleAnnounce(this.Cards, currentCard, context.TrumpCard) == Announce.Twenty
