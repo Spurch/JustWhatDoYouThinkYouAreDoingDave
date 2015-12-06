@@ -9,5 +9,6 @@ namespace HAL9000.HALLogic
     public  class Constants
     {
         public static  int TOOHIGHTMINWEIGHTNUMBER = 10;
+        public static int NIGHVALUETOOPONENTSCARD = 10;
     }
 }

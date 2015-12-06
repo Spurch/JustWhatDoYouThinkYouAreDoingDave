@@ -12,10 +12,14 @@ namespace HAL9000
     {
         private readonly string name = "HAL9000";
         private ICollection<Card> possibleCardsToPlay = new List<Card>();
+        private ICollection<Card> queensFor20Or40 = new List<Card>();
+
 
         public override PlayerAction GetTurn(PlayerTurnContext context)
         {
             possibleCardsToPlay = this.PlayerActionValidator.GetPossibleCardsToPlay(context, this.Cards);
+
+            queensFor20Or40 = this.CheckForTwentyOrForty(context);
 
             if (this.PlayerActionValidator.IsValid(PlayerAction.ChangeTrump(), context, this.Cards))
             {
