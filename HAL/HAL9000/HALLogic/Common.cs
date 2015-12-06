@@ -115,7 +115,7 @@ namespace HAL9000
             var hasNineOfTrump = from x in this.Cards
                                  where x.Type == CardType.Nine && x.Suit == context.TrumpCard.Suit
                                  select x;
-            if (hasNineOfTrump.Count() > 0)
+            if (hasNineOfTrump.Any())
             {
                 return true;
             }
@@ -130,6 +130,11 @@ namespace HAL9000
         private Card GetCardFromHand(CardType type, CardSuit suit)
         {
             return this.Cards.First(x => x.Type == type && x.Suit == suit);
+        }
+
+        private bool HaveLonely10FromSuit(CardSuit suit)
+        {
+            return this.Cards.Any(x => x.Type == CardType.Ten && x.Suit == suit);
         }
     }
 }
