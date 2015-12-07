@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using HAL9000.HALLogic;
-
-namespace HAL9000.Extensions
+﻿namespace HAL9000.Extensions
 {
     using System.Linq;
     using Santase.Logic.Cards;
     using Santase.Logic.Players;
+    using HALLogic;
+    using System.Collections.Generic;
 
     public partial class WeightsCalculations
     {
