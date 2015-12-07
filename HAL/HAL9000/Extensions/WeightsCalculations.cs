@@ -59,14 +59,27 @@
                 {
                     weightedPlayerCards[card] += 12;
                 }
-                if (card.Type == CardType.Queen && !usedCardsInGame[card.Suit].Select(x => x.Type == CardType.King).Any())
+                if (usedCardsInGame.ContainsKey(card.Suit))
                 {
-                    weightedPlayerCards[card] += 10;
+                    if (card.Type == CardType.Queen &&
+                        !usedCardsInGame[card.Suit].Select(x => x.Type == CardType.King).Any())
+                    {
+                        weightedPlayerCards[card] += 10;
+                    }
+                    if (card.Type == CardType.King &&
+                        !usedCardsInGame[card.Suit].Select(x => x.Type == CardType.Queen).Any())
+                    {
+                        weightedPlayerCards[card] += 10;
+                    }
                 }
-                if (card.Type == CardType.King && !usedCardsInGame[card.Suit].Select(x => x.Type == CardType.Queen).Any())
+                else
                 {
-                    weightedPlayerCards[card] += 10;
+                    if (card.Type == CardType.Queen || card.Type == CardType.King)
+                    {
+                        weightedPlayerCards[card] += 10;
+                    }
                 }
+                
             }
 
             return weightedPlayerCards;
