@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Santase.Logic.RoundStates;
 
 namespace HAL9000
 {
@@ -19,6 +20,7 @@ namespace HAL9000
 
         public override PlayerAction GetTurn(PlayerTurnContext context)
         {
+            var typeState = context.State.GetType();
             possibleCardsToPlay = this.PlayerActionValidator.GetPossibleCardsToPlay(context, this.Cards);
 
             trumpSuit = context.TrumpCard.Suit;
@@ -36,6 +38,12 @@ namespace HAL9000
             {
                 return this.CloseGame();
             }
+
+            if (typeState == typeof (FinalRoundState) && context.CardsLeftInDeck>0)
+            {
+                ClosedState(context, )
+            }
+           
 
             return null;
         }
