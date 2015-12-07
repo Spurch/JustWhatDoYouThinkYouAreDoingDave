@@ -1,4 +1,6 @@
-﻿namespace HAL9000
+﻿using HAL9000.HALLogic;
+
+namespace HAL9000
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -17,16 +19,6 @@
                 usedCards[playedCard.Suit] = new List<Card>();
             }
             usedCards[playedCard.Suit].Add(playedCard);
-        }
-
-        /// <summary>
-        /// Returns the amount of trump cards in your current hand.
-        /// </summary>
-        /// <param name="context">Current PlayerTurnContext</param>
-        /// <returns>Returns the current number of trumps or 0 if none.</returns>
-        private int TrumpsInCurrentHand(PlayerTurnContext context)
-        {
-            return this.Cards.Select(x => x.Suit == context.TrumpCard.Suit).Count();
         }
 
         /// <summary>

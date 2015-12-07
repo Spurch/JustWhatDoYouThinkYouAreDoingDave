@@ -9,33 +9,35 @@
     /// <summary>
     /// 
     /// </summary>
-    public class WeightsCalculations
+    public partial class WeightsCalculations
     {
         private static IDictionary<Card, double> cardWeights;
         private static IDictionary<CardSuit, List<Card>> usedCardsInGame;
         private static Card lastOpponentCard;
-
-        private static Stack<Card> spadeStack;
-        private static Stack<Card> diamondStack;
-        private static Stack<Card> heartStack;
-        private static Stack<Card> clubStack;
+        private static List<Card> majorCards;
 
         /// <summary>
         /// 
         /// </summary>
         static WeightsCalculations()
         {
+            majorCards = new List<Card>();
             cardWeights = new Dictionary<Card, double>();
-            foreach (CardSuit suit in Enum.GetValues((typeof(CardSuit))))
+
+            for (int i = 0; i < 4; i++)
             {
-                cardWeights[new Card(suit, CardType.Ace)] = 11;
-                cardWeights[new Card(suit, CardType.Ten)] = 10;
-                cardWeights[new Card(suit, CardType.King)] = 4;
-                cardWeights[new Card(suit, CardType.Queen)] = 3;
-                cardWeights[new Card(suit, CardType.Jack)] = 2;
-                cardWeights[new Card(suit, CardType.Nine)] = 0;
+                var card = new Card((CardSuit)i, CardType.Ace);
+                SetMajorCard(card);
+
+                cardWeights[card] = 11;
+                cardWeights[new Card((CardSuit)i, CardType.Ten)] = 10;
+                cardWeights[new Card((CardSuit)i, CardType.King)] = 4;
+                cardWeights[new Card((CardSuit)i, CardType.Queen)] = 3;
+                cardWeights[new Card((CardSuit)i, CardType.Jack)] = 2;
+                cardWeights[new Card((CardSuit)i, CardType.Nine)] = 0;
             }
 
+            InitializeStatistics();
         }
 
         /// <summary>
@@ -45,7 +47,7 @@
         /// <param name="currentHand"></param>
         /// <param name="usedCards"></param>
         /// <returns></returns>
-        public static IDictionary<Card, double> EvaluateWeightsInBaseState(PlayerTurnContext context, 
+        public static IDictionary<Card, double> EvaluateWeightsInBaseState(PlayerTurnContext context,
             ICollection<Card> currentHand, IDictionary<CardSuit, List<Card>> usedCards)
         {
             usedCardsInGame = usedCards;
@@ -82,8 +84,14 @@
         public static IDictionary<Card, double> EvaluateWeightsInClosedState(PlayerTurnContext context, ICollection<Card> currentHand,
             IDictionary<CardSuit, List<Card>> usedCards, Card opponentPlayedCard)
         {
+            lastOpponentCard = opponentPlayedCard;
             usedCardsInGame = usedCards;
             IDictionary<Card, double> weightedPlayerCards = new Dictionary<Card, double>();
+
+            if (majorCards.Contains(lastOpponentCard))
+            {
+                majorCards.Remove(lastOpponentCard);
+            }
 
             foreach (var card in currentHand)
             {
@@ -100,27 +108,31 @@
                 {
                     weightedPlayerCards[card] += 10;
                 }
+                if (majorCards.Contains(card))
+                {
+                    weightedPlayerCards[card] += 10;
+                }
             }
 
             return weightedPlayerCards;
         }
 
-        public static void SetMajorCard()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="majorCard"></param>
+        public static void SetMajorCard(Card majorCard)
         {
-
+            majorCards.Add(majorCard);
         }
 
-        private static bool DoWeHaveMajorCardsOfSuit()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="majorCard"></param>
+        public static void RemoveMajorCard(Card majorCard)
         {
-            return true;
-        }
-
-        private static void InitializeStacks()
-        {
-            spadeStack = new Stack<Card>();
-            diamondStack = new Stack<Card>();
-            heartStack = new Stack<Card>();
-            clubStack = new Stack<Card>();
+            majorCards.Remove(majorCard);
         }
     }
 }
