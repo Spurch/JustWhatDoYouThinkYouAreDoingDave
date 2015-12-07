@@ -1,15 +1,10 @@
-﻿
-
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
-using System.Security.Cryptography.X509Certificates;
-using HAL9000.HALLogic;
-using Santase.Logic.Cards;
-
+﻿using HAL9000.HALLogic;
 namespace HAL9000
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Santase.Logic.Cards;
     using Santase.Logic.Players;
 
     public partial class HAL9000
@@ -25,10 +20,10 @@ namespace HAL9000
                 if (Have20Or40(queensFor20Or40) || weight > Constants.TOOHIGHTMINWEIGHTNUMBER)
                 {
                     var somecard = (from x in this.Cards
-                        where
-                            x.Suit == oponentCardSuit && x.GetValue() > oponentCardValue
+                                    where
+                                        x.Suit == oponentCardSuit && x.GetValue() > oponentCardValue
                                     orderby x.GetValue()
-                        select x).FirstOrDefault();
+                                    select x).FirstOrDefault();
                     if (somecard != null)
                     {
                         turnCard = somecard;
@@ -48,7 +43,7 @@ namespace HAL9000
             {
                 if (Have20Or40(queensFor20Or40))
                 {
-                        turnCard = queensFor20Or40;
+                    turnCard = queensFor20Or40;
                 }
             }
 
@@ -86,7 +81,7 @@ namespace HAL9000
                         turnCard = somecard;
                     }
                 }
-                if ( oponentCardValue < Constants.LESSVALUETHATWECANGETWITHTEN && oponentCardSuit != trumpSuit)
+                if (oponentCardValue < Constants.LESSVALUETHATWECANGETWITHTEN && oponentCardSuit != trumpSuit)
                 {
                     turnCard = GetCardFromHand(CardType.Ten, oponentCardSuit);
                 }

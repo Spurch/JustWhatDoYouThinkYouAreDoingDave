@@ -9,12 +9,7 @@
     public partial class HAL9000
     {
         private Dictionary<CardSuit, List<Card>> usedCards = new Dictionary<CardSuit, List<Card>>();
-
-        public Dictionary<CardSuit, List<Card>> UsedCards
-        {
-            get { return usedCards; }
-        }
-
+        
         private void UpdateUsedCardsCollections(Card playedCard)
         {
             if (!usedCards.ContainsKey(playedCard.Suit))
