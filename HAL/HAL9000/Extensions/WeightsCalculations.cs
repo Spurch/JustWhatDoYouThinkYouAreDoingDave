@@ -7,7 +7,7 @@
     using HALLogic;
 
     /// <summary>
-    /// 
+    /// Class that is used to calculate the weights of the cards in the game.
     /// </summary>
     public partial class WeightsCalculations
     {
@@ -35,7 +35,7 @@
         }
 
         /// <summary>
-        /// 
+        /// Method that evaluates weights when in base state.
         /// </summary>
         /// <param name="context"></param>
         /// <param name="currentHand"></param>
@@ -52,7 +52,7 @@
         }
 
         /// <summary>
-        /// 
+        /// Method that evaluates weights when in closed state.
         /// </summary>
         /// <param name="context"></param>
         /// <param name="currentHand"></param>
@@ -83,7 +83,7 @@
         }
 
         /// <summary>
-        /// 
+        /// Method that evaluates weights when in FinalState.
         /// </summary>
         /// <param name="context"></param>
         /// <param name="currentHand"></param>
@@ -134,7 +134,7 @@
         }
 
         /// <summary>
-        ///     
+        ///  Get access to MajorCard collection.
         /// </summary>
         public static List<Card> MajorCard
         {

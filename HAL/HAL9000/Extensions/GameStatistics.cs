@@ -88,6 +88,12 @@
             }
         }
 
+        /// <summary>
+        /// Method to calculate the cards left in the opponents hand.
+        /// </summary>
+        /// <param name="possibleCardsToPlay"></param>
+        /// <param name="usedCards"></param>
+        /// <returns></returns>
         public static List<Card> GetOpponentHand(ICollection<Card> possibleCardsToPlay, Dictionary<CardSuit, List<Card>> usedCards)
         {
             List<Card> opponentHand = new List<Card>();

@@ -1,14 +1,11 @@
-﻿using System;
-using HAL9000.Extensions;
-using HAL9000.HALLogic;
-
-namespace HAL9000
+﻿namespace HAL9000
 {
     using System.Collections.Generic;
     using System.Linq;
     using Santase.Logic;
     using Santase.Logic.Cards;
     using Santase.Logic.Players;
+    using Extensions;
 
     public partial class HAL9000
     {
@@ -161,6 +158,11 @@ namespace HAL9000
             return false;
         }
 
+        /// <summary>
+        /// Method that checks if we have a Major trump card.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public bool DoWeHaveAMajorTrump(PlayerTurnContext context)
         {
             foreach (var card in this.Cards)

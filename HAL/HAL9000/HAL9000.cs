@@ -2,9 +2,7 @@
 {
     using Santase.Logic.Players;
     using System.Collections.Generic;
-    using Santase.Logic;
     using Santase.Logic.Cards;
-    using Santase.Logic.RoundStates;
     using Extensions;
 
     public partial class HAL9000 : BasePlayer
