@@ -7,10 +7,11 @@
     using Santase.Logic.RoundStates;
     using Extensions;
 
-    public partial class HAL9000: BasePlayer
+    public partial class HAL9000 : BasePlayer
     {
         private readonly string name = "HAL9000";
         private ICollection<Card> possibleCardsToPlay = new List<Card>();
+        private Dictionary<CardSuit, List<Card>> usedCards = new Dictionary<CardSuit, List<Card>>();
         private Card queensFor20Or40;
         private CardSuit trumpSuit;
         private CardSuit oponentCardSuit;
@@ -18,12 +19,15 @@
 
         public override PlayerAction GetTurn(PlayerTurnContext context)
         {
-            var typeState = context.State.GetType();
+            var currentStateType = context.State.GetType().Name;
             possibleCardsToPlay = this.PlayerActionValidator.GetPossibleCardsToPlay(context, this.Cards);
 
             trumpSuit = context.TrumpCard.Suit;
-            oponentCardSuit = context.FirstPlayedCard.Suit;
-            oponentCardValue = context.FirstPlayedCard.GetValue();
+            if (context.FirstPlayedCard != null)
+            {
+                oponentCardSuit = context.FirstPlayedCard.Suit;
+                oponentCardValue = context.FirstPlayedCard.GetValue();
+            }
 
             queensFor20Or40 = this.CheckForTwentyOrForty(context);
 
@@ -34,54 +38,46 @@
 
             if (this.CloseGame(context, possibleCardsToPlay))
             {
-                return this.CloseGame();
+                if (this.PlayerActionValidator.IsValid(PlayerAction.CloseGame(), context, this.Cards))
+                {
+                    return this.CloseGame();
+                }
             }
-            if (typeState == typeof(StartRoundState))
+            if (currentStateType == "StartRoundState")
             {
                 var wightCards = WeightsCalculations.EvaluateWeightsInBaseState(context, this.Cards, this.usedCards);
                 return FirstStepState(context, wightCards);
             }
-            if (typeState == typeof(MoreThanTwoCardsLeftRoundState))
+            if (currentStateType == "MoreThanTwoCardsLeftRoundState")
             {
-                var wightCards = WeightsCalculations.EvaluateWeightsInBaseState(context, this.Cards, this.usedCards);
+                var wightCards = WeightsCalculations.EvaluateWeightsInBaseState(context, possibleCardsToPlay, this.usedCards);
                 return MoreThanTwoCardsState(context, wightCards);
             }
-            if (typeState == typeof(TwoCardsLeftRoundState))
+            if (currentStateType == "TwoCardsLeftRoundState")
             {
-                var wightCards = WeightsCalculations.EvaluateWeightsInBaseState(context, this.Cards, this.usedCards);
+                var wightCards = WeightsCalculations.EvaluateWeightsInBaseState(context, possibleCardsToPlay, this.usedCards);
                 return TwoCardLeft(context, wightCards);
             }
-            if (typeState == typeof (FinalRoundState) && context.CardsLeftInDeck>0)
+            if (currentStateType == "FinalRoundState" && context.CardsLeftInDeck > 0)
             {
-                var wightCards = WeightsCalculations.EvaluateWeightsInClosedState(context, this.Cards, this.usedCards, context.FirstPlayedCard);
+                var wightCards = WeightsCalculations.EvaluateWeightsInClosedState(context, possibleCardsToPlay, this.usedCards, context.FirstPlayedCard);
                 return ClosedState(context, wightCards);
             }
-            if (typeState == typeof(FinalRoundState))
+            if (currentStateType == "FinalRoundState")
             {
-                var wightCards = WeightsCalculations.EvaluateWeightsInClosedState(context, this.Cards, this.usedCards, context.FirstPlayedCard);
+                var opponentHand = WeightsCalculations.GetOpponentHand(possibleCardsToPlay, usedCards);
+                var wightCards = WeightsCalculations.EvaluateWeightsInClosedState(context, possibleCardsToPlay, this.usedCards, context.FirstPlayedCard);
+                //var wightCards = WeightsCalculations.EvaluateWeightsInFinalState(context, possibleCardsToPlay, this.usedCards, opponentHand);
                 return ClosedState(context, wightCards);
             }
 
-            var wightCardsMore = WeightsCalculations.EvaluateWeightsInBaseState(context, this.Cards, this.usedCards);
-            return MoreThanTwoCardsState(context, wightCardsMore);
+            var wightCardsMore = WeightsCalculations.EvaluateWeightsInBaseState(context, possibleCardsToPlay, usedCards);
+            return FirstStepState(context, wightCardsMore);
         }
 
         public override string Name
         {
             get { return this.name; }
-        }
-
-        //TODO: Add stats and weight logic to the closing game logic.
-        private bool CloseGame(PlayerTurnContext context, ICollection<Card> currentPossibleCardsToPlay)
-        {
-            if (this.PlayerActionValidator.IsValid(PlayerAction.CloseGame(), context, this.Cards))
-            {
-                if (WeightsCalculations.TrumpsInCurrentHand(currentPossibleCardsToPlay, context) >= 2 && (CurrentHandPoints(context) >=50))
-                {
-                    return true;
-                }
-            }
-            return false;
         }
 
         /// <summary>
@@ -91,7 +87,23 @@
         public override void EndTurn(PlayerTurnContext context)
         {
             this.UpdateUsedCardsCollections(context.FirstPlayedCard);
-            this.UpdateUsedCardsCollections(context.SecondPlayedCard);
+            if (context.SecondPlayedCard != null)
+            {
+                this.UpdateUsedCardsCollections(context.SecondPlayedCard);
+            }
+        }
+
+        //TODO: Add stats and weight logic to the closing game logic.
+        private bool CloseGame(PlayerTurnContext context, ICollection<Card> currentPossibleCardsToPlay)
+        {
+            if (this.PlayerActionValidator.IsValid(PlayerAction.CloseGame(), context, this.Cards))
+            {
+                if (WeightsCalculations.TrumpsInCurrentHand(currentPossibleCardsToPlay, context) >= 2 && (CurrentHandPoints(context) >= 50))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

@@ -56,14 +56,63 @@
         /// <returns></returns>
         public static int TrumpCardsInGraveyard(IDictionary<CardSuit, List<Card>> cards, PlayerTurnContext context)
         {
-            var trumpsAlreadyPlayed = cards[context.TrumpCard.Suit].Count;
+            int trumpsAlreadyPlayed = 0;
+            if (cards.ContainsKey(context.TrumpCard.Suit))
+            {
+                trumpsAlreadyPlayed = cards[context.TrumpCard.Suit].Count;
+            }
+
 
             return trumpsAlreadyPlayed;
         }
 
+        private static bool GetOpponentSuitState(CardSuit suit)
+        {
+            switch (suit)
+            {
+                case CardSuit.Club:
+                    return Constants.OpponentHasClub;// && Constants.OpponentHasMajorClub;
+                    break;
+
+                case CardSuit.Heart:
+                    return Constants.OpponentHasHeart;// && Constants.OpponentHasMajorHeart;
+                    break;
+                case CardSuit.Diamond:
+                    return Constants.OpponentHasDiamond;// && Constants.OpponentHasDiamond;
+                    break;
+                case CardSuit.Spade:
+                    return Constants.OpponentHasSpade;// && Constants.OpponentHasMajorSpade;
+                    break;
+                default:
+                    return false;
+            }
+        }
+
+        public static List<Card> GetOpponentHand(ICollection<Card> possibleCardsToPlay, Dictionary<CardSuit, List<Card>> usedCards)
+        {
+            List<Card> opponentHand = new List<Card>();
+            foreach (var suit in usedCards)
+            {
+                foreach (var innerCard in suit.Value)
+                {
+                    var result = cardWeights.Keys.FirstOrDefault(y => !y.Equals(innerCard));
+                    opponentHand.Add(result);
+                }
+            }
+            foreach (var card in possibleCardsToPlay)
+            {
+                if (opponentHand.Contains(card))
+                {
+                    opponentHand.Remove(card);
+                }
+            }
+
+            return opponentHand;
+        } 
+
         private static void CalculateStatistics()
         {
-            
+
         }
     }
 }

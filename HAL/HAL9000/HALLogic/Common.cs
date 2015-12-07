@@ -12,13 +12,15 @@ namespace HAL9000
 
     public partial class HAL9000
     {
-        private Dictionary<CardSuit, List<Card>> usedCards = new Dictionary<CardSuit, List<Card>>();
-
         private void UpdateUsedCardsCollections(Card playedCard)
         {
+            if (usedCards == null)
+            {
+                usedCards = new Dictionary<CardSuit, List<Card>>();
+            }
             if (!usedCards.ContainsKey(playedCard.Suit))
             {
-                usedCards[playedCard.Suit] = new List<Card>();
+                usedCards.Add(playedCard.Suit, new List<Card>());
             }
             usedCards[playedCard.Suit].Add(playedCard);
 
@@ -28,15 +30,27 @@ namespace HAL9000
 
                 if (playedCard.Type == CardType.Ace || playedCard.Type > (CardType) 9)
                 {
-                    if (usedCards[playedCard.Suit].Any(x => x.Type == CardType.Ten))
+                    if (usedCards[playedCard.Suit].Any(x => x.Type != CardType.Ten))
                     {
-
+                        WeightsCalculations.MajorCard.Add(new Card(playedCard.Suit, CardType.Ten));
+                    }
+                    else if (usedCards[playedCard.Suit].Any(x => x.Type != CardType.King))
+                    {
+                        WeightsCalculations.MajorCard.Add(new Card(playedCard.Suit, CardType.King));
+                    }
+                    else if (usedCards[playedCard.Suit].Any(x => x.Type != CardType.Queen))
+                    {
+                        WeightsCalculations.MajorCard.Add(new Card(playedCard.Suit, CardType.Queen));
+                    }
+                    else if (usedCards[playedCard.Suit].Any(x => x.Type != CardType.Jack))
+                    {
+                        WeightsCalculations.MajorCard.Add(new Card(playedCard.Suit, CardType.Jack));
                     }
                 }
-                
-
-                //var nextMajorCard = usedCards[playedCard.Suit].Where(x => x.Type > playedCard.Type && x.Type > (CardType)9);
-
+                else
+                {
+                    WeightsCalculations.MajorCard.Add(new Card(playedCard.Suit, CardType.Nine));
+                }
             }
         }
 

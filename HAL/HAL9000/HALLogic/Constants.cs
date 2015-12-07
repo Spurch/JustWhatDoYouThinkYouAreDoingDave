@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HAL9000.HALLogic
+﻿namespace HAL9000.HALLogic
 {
     public  class Constants
     {
@@ -22,10 +16,16 @@ namespace HAL9000.HALLogic
         public static bool OpponentHasHeart = true;
         public static bool OpponentHasClub = true;
 
-        public static int TOOHIGHTMINWEIGHTNUMBER = 10;
-        public static int NIGHVALUETOOPONENTSCARD = 10;
-        public static int COUNTTRUMPMORETHANCANGETWITHTRUMP = 2;
-        public static int LESSVALUETHATWECANGETWITHTEN = 10;
-        public static int TOOLOWVALUEFORWEMAKEANYTHINK = 2;
+        public static bool OpponentHasMajorTrump = false;
+        public static bool OpponentHasMajorSpade = false;
+        public static bool OpponentHasMajorDiamond = false;
+        public static bool OpponentHasMajorHeart = false;
+        public static bool OpponentHasMajorClub = false;
+
+        public static int TooHighMinimalWeightNumber = 10;
+        public static int HighValueOpponentCard = 10;
+        public static int AmountOfTrumpsToAllowUsToUseThem = 2;
+        public static int ValueThatWeCanGetWithTen = 10;
+        public static int ValueTooLowToTakeAction = 2;
     }
 }
