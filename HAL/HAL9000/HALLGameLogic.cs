@@ -13,7 +13,7 @@
 
     public partial class HAL9000
     {
-        private PlayerAction FirstStepState(PlayerTurnContext context, Dictionary<Card, double> weightCards)
+        private PlayerAction FirstStepState(PlayerTurnContext context, IDictionary<Card, double> weightCards)
         {
             var lowestWeightCard = weightCards.OrderBy(x => x.Value).First();
             var card = lowestWeightCard.Key;
@@ -36,7 +36,7 @@
             }
             return PlayCard(turnCard);
         }
-        private PlayerAction MoreThanTwoCardsState(PlayerTurnContext context, Dictionary<Card, double> weightCards)
+        private PlayerAction MoreThanTwoCardsState(PlayerTurnContext context, IDictionary<Card, double> weightCards)
         {
             var lowestWeightCard = weightCards.OrderBy(x => x.Value).First();
             var card = lowestWeightCard.Key;
@@ -62,7 +62,7 @@
                                     select x).FirstOrDefault();
                     if (somecard == null)
                     {
-                        if (GameStatistics.TrumpsInCurrentHand(this.Cards, context) >= Constants.COUNTTRUMPMORETHANCANGETWITHTRUMP)
+                        if (WeightsCalculations.TrumpsInCurrentHand(this.Cards, context) >= Constants.COUNTTRUMPMORETHANCANGETWITHTRUMP)
                         {
                             if (HaveCardInHand(CardType.Jack, trumpSuit))
                             {
@@ -97,7 +97,7 @@
             return PlayCard(turnCard);
         }
 
-        private PlayerAction TwoCardLeft(PlayerTurnContext context, Dictionary<Card, double> weightCards)
+        private PlayerAction TwoCardLeft(PlayerTurnContext context, IDictionary<Card, double> weightCards)
         {
             var lowestWeightCard = weightCards.OrderBy(x => x.Value).First();
             var card = lowestWeightCard.Key;
@@ -121,7 +121,7 @@
                                 select x).FirstOrDefault();
                 if (somecard == null)
                 {
-                    if (GameStatistics.TrumpsInCurrentHand(this.Cards, context) > Constants.COUNTTRUMPMORETHANCANGETWITHTRUMP)
+                    if (WeightsCalculations.TrumpsInCurrentHand(this.Cards, context) > Constants.COUNTTRUMPMORETHANCANGETWITHTRUMP)
                     {
                         if (HaveCardInHand(CardType.Jack, trumpSuit))
                         {
@@ -133,7 +133,7 @@
             }
             return PlayCard(turnCard);
         }
-        private PlayerAction ClosedState(PlayerTurnContext context, Dictionary<Card, double> weightCards)
+        private PlayerAction ClosedState(PlayerTurnContext context, IDictionary<Card, double> weightCards)
         {
             var sortedWight = weightCards.OrderBy(x => x.Value);
             var lowestWeightCard = sortedWight.First();
@@ -152,7 +152,7 @@
                 }
                 else
                 {
-                    if (GameStatistics.HowManyTrumpCardsHasTheOpponent (this.Cards, this.usedCards, context) == null)
+                    if (WeightsCalculations.HowManyTrumpCardsHasTheOpponent (this.Cards, this.usedCards, context) == null)
                     {
                         var somecard = sortedWight.Last(x => x.Key.Suit != trumpSuit).Key;
                         turnCard = somecard;
@@ -161,36 +161,37 @@
                             turnCard = hightCard;
                         }
                     }
-                    if (GameStatistics.HowManyTrumpCardsHasTheOpponent(this.Cards, this.usedCards, context) <= GameStatistics.TrumpsInCurrentHand(this.Cards, context))
+                    if (WeightsCalculations.HowManyTrumpCardsHasTheOpponent(this.Cards, this.usedCards, context) <= WeightsCalculations.TrumpsInCurrentHand(this.Cards, context))
                     {
-                        if (wehavetrumpbig)
-                        {
-                            var somecard = sortedWight.Last(x => x.Key.Suit == trumpSuit).Key;
-                            turnCard = somecard;
-                            if (somecard == null)
-                            {
-                                turnCard = hightCard;
-                            }
-                        }
+                        //if (wehavetrumpbig)
+                        //{
+                        //    var somecard = sortedWight.Last(x => x.Key.Suit == trumpSuit).Key;
+                        //    turnCard = somecard;
+                        //    if (somecard == null)
+                        //    {
+                        //        turnCard = hightCard;
+                        //    }
+                        //}
 
-                        if (wehavetrumpsmall)
-                        {
-                            var somecard = sortedWight.First(x => x.Key.Suit == trumpSuit).Key;
-                            turnCard = somecard;
-                            if (somecard == null)
-                            {
-                                turnCard = hightCard;
-                            }
-                        }
-
+                        //if (wehavetrumpsmall)
+                        //{
+                        //    var somecard = sortedWight.First(x => x.Key.Suit == trumpSuit).Key;
+                        //    turnCard = somecard;
+                        //    if (somecard == null)
+                        //    {
+                        //        turnCard = hightCard;
+                        //    }
+                        //}
+                        turnCard = hightCard;
                     }
-                    if (GameStatistics.HowManyTrumpCardsHasTheOpponent(this.Cards, this.usedCards, context) > GameStatistics.TrumpsInCurrentHand(this.Cards, context))
+                    if (WeightsCalculations.HowManyTrumpCardsHasTheOpponent(this.Cards, this.usedCards, context) > WeightsCalculations.TrumpsInCurrentHand(this.Cards, context))
                     {
-                        if (wehavesuitbig)
-                        {
-                            var somecard = sortedWight.First(x => x.Key.Suit == bigSuit).Key;
-                            turnCard = somecard;
-                        }
+                        //if (wehavesuitbig)
+                        //{
+                        //    var somecard = sortedWight.First(x => x.Key.Suit == bigSuit).Key;
+                        //    turnCard = somecard;
+                        //}
+                        turnCard = hightCard;
                     }
                 }
             }

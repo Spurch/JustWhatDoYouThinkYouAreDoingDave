@@ -5,6 +5,7 @@
     using Santase.Logic;
     using Santase.Logic.Cards;
     using Santase.Logic.RoundStates;
+    using Extensions;
 
     public partial class HAL9000: BasePlayer
     {
@@ -37,32 +38,32 @@
             }
             if (typeState == typeof(StartRoundState))
             {
-                var wightCards = EvaluateWeightsInBaseState(context, this.Cards, this.usedCards);
+                var wightCards = WeightsCalculations.EvaluateWeightsInBaseState(context, this.Cards, this.usedCards);
                 return FirstStepState(context, wightCards);
             }
             if (typeState == typeof(MoreThanTwoCardsLeftRoundState))
             {
-                var wightCards = EvaluateWeightsInBaseState(context, this.Cards, this.usedCards);
+                var wightCards = WeightsCalculations.EvaluateWeightsInBaseState(context, this.Cards, this.usedCards);
                 return MoreThanTwoCardsState(context, wightCards);
             }
             if (typeState == typeof(TwoCardsLeftRoundState))
             {
-                var wightCards = EvaluateWeightsInBaseState(context, this.Cards, this.usedCards);
+                var wightCards = WeightsCalculations.EvaluateWeightsInBaseState(context, this.Cards, this.usedCards);
                 return TwoCardLeft(context, wightCards);
             }
             if (typeState == typeof (FinalRoundState) && context.CardsLeftInDeck>0)
             {
-                var wightCards = EvaluateWeightsInClosedState(context, this.Cards, this.usedCards, context.FirstPlayedCard);
+                var wightCards = WeightsCalculations.EvaluateWeightsInClosedState(context, this.Cards, this.usedCards, context.FirstPlayedCard);
                 return ClosedState(context, wightCards);
             }
             if (typeState == typeof(FinalRoundState))
             {
-                var wightCards = EvaluateWeightsInClosedState(context, this.Cards, this.usedCards, context.FirstPlayedCard);
+                var wightCards = WeightsCalculations.EvaluateWeightsInClosedState(context, this.Cards, this.usedCards, context.FirstPlayedCard);
                 return ClosedState(context, wightCards);
             }
 
-            var wightCardsMore = EvaluateWeightsInBaseState(context, this.Cards, this.usedCards);
-            return MoreThanTwoCardsState(context, wightCards);
+            var wightCardsMore = WeightsCalculations.EvaluateWeightsInBaseState(context, this.Cards, this.usedCards);
+            return MoreThanTwoCardsState(context, wightCardsMore);
         }
 
         public override string Name
@@ -75,7 +76,7 @@
         {
             if (this.PlayerActionValidator.IsValid(PlayerAction.CloseGame(), context, this.Cards))
             {
-                if (TrumpsInCurrentHand(context) >= 2 && (CurrentHandPoints(context) >=50))
+                if (WeightsCalculations.TrumpsInCurrentHand(currentPossibleCardsToPlay, context) >= 2 && (CurrentHandPoints(context) >=50))
                 {
                     return true;
                 }

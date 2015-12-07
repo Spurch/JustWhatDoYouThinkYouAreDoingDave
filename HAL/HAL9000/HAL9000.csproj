@@ -50,7 +50,6 @@
     <Compile Include="HALLGameLogic.cs" />
     <Compile Include="HALLogic\Common.cs" />
     <Compile Include="HALLogic\Constants.cs" />
-    <Compile Include="HALLGameLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
