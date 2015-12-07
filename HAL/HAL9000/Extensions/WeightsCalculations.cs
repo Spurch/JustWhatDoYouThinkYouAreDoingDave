@@ -36,7 +36,7 @@
                 cardWeights[new Card((CardSuit)i, CardType.Nine)] = 0;
             }
 
-            InitializeStatistics();
+            //InitializeStatistics();
         }
 
         /// <summary>
