@@ -44,8 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extensions\NaHALMagiqta.cs" />
+    <Compile Include="Extensions\GameStatistics.cs" />
+    <Compile Include="Extensions\WeightsCalculations.cs" />
     <Compile Include="HAL9000.cs" />
+    <Compile Include="HALLGameLogic.cs" />
     <Compile Include="HALLogic\Common.cs" />
     <Compile Include="HALLogic\Constants.cs" />
     <Compile Include="HALLogic\HALLGameLogic.cs" />

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Linq;
-
-namespace HAL9000
+﻿namespace HAL9000
 {
     using Santase.Logic.Players;
     using System.Collections.Generic;
     using Santase.Logic;
     using Santase.Logic.Cards;
+    using Extensions;
 
     public partial class HAL9000: BasePlayer
     {
@@ -50,7 +48,7 @@ namespace HAL9000
         {
             if (this.PlayerActionValidator.IsValid(PlayerAction.CloseGame(), context, this.Cards))
             {
-                if (TrumpsInCurrentHand(context) >= 2 && (CurrentHandPoints(context) >=50))
+                if (GameStatistics.TrumpsInCurrentHand(context) >= 2 && (CurrentHandPoints(context) >=50))
                 {
                     return true;
                 }

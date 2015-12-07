@@ -27,7 +27,7 @@
             for (int i = 0; i < 4; i++)
             {
                 var card = new Card((CardSuit)i, CardType.Ace);
-                SetMajorCard(card);
+                MajorCard.Add(card);
 
                 cardWeights[card] = 11;
                 cardWeights[new Card((CardSuit)i, CardType.Ten)] = 10;
@@ -118,21 +118,14 @@
         }
 
         /// <summary>
-        /// 
+        ///     
         /// </summary>
-        /// <param name="majorCard"></param>
-        public static void SetMajorCard(Card majorCard)
+        public static List<Card> MajorCard 
         {
-            majorCards.Add(majorCard);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="majorCard"></param>
-        public static void RemoveMajorCard(Card majorCard)
-        {
-            majorCards.Remove(majorCard);
+            get
+            {
+                return majorCards;
+            }
         }
     }
 }

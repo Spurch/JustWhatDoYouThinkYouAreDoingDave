@@ -1,4 +1,6 @@
-﻿using HAL9000.HALLogic;
+﻿using System;
+using HAL9000.Extensions;
+using HAL9000.HALLogic;
 
 namespace HAL9000
 {
@@ -11,7 +13,7 @@ namespace HAL9000
     public partial class HAL9000
     {
         private Dictionary<CardSuit, List<Card>> usedCards = new Dictionary<CardSuit, List<Card>>();
-        
+
         private void UpdateUsedCardsCollections(Card playedCard)
         {
             if (!usedCards.ContainsKey(playedCard.Suit))
@@ -19,6 +21,23 @@ namespace HAL9000
                 usedCards[playedCard.Suit] = new List<Card>();
             }
             usedCards[playedCard.Suit].Add(playedCard);
+
+            if (WeightsCalculations.MajorCard.Contains(playedCard))
+            {
+                WeightsCalculations.MajorCard.Remove(playedCard);
+
+                if (playedCard.Type == CardType.Ace || playedCard.Type > (CardType) 9)
+                {
+                    if (usedCards[playedCard.Suit].Any(x => x.Type == CardType.Ten))
+                    {
+
+                    }
+                }
+                
+
+                //var nextMajorCard = usedCards[playedCard.Suit].Where(x => x.Type > playedCard.Type && x.Type > (CardType)9);
+
+            }
         }
 
         /// <summary>
@@ -124,6 +143,21 @@ namespace HAL9000
             if (has10OfSuit && hasOtherCardsOfSuit == 1)
             {
                 return true;
+            }
+            return false;
+        }
+
+        public bool DoWeHaveAMajorTrump(PlayerTurnContext context)
+        {
+            foreach (var card in this.Cards)
+            {
+                if (card.Suit == context.TrumpCard.Suit)
+                {
+                    if (WeightsCalculations.MajorCard.Contains(card))
+                    {
+                        return true;
+                    }
+                }
             }
             return false;
         }

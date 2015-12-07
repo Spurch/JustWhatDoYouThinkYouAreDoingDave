@@ -1,5 +1,4 @@
-﻿using HAL9000.HALLogic;
-namespace HAL9000
+﻿namespace HAL9000
 {
     using System;
     using System.Collections.Generic;
@@ -9,6 +8,7 @@ namespace HAL9000
     using System.Collections.Generic;
     using System.Linq;
     using Santase.Logic.Cards;
+    using HALLogic;
 
     public partial class HAL9000
     {
