@@ -1,13 +1,10 @@
-﻿using System;
-using System.Linq;
-using Santase.Logic.RoundStates;
-
-namespace HAL9000
+﻿namespace HAL9000
 {
     using Santase.Logic.Players;
     using System.Collections.Generic;
     using Santase.Logic;
     using Santase.Logic.Cards;
+    using Santase.Logic.RoundStates;
 
     public partial class HAL9000: BasePlayer
     {
@@ -38,14 +35,34 @@ namespace HAL9000
             {
                 return this.CloseGame();
             }
-
+            if (typeState == typeof(StartRoundState))
+            {
+                var wightCards = EvaluateWeightsInBaseState(context, this.Cards, this.usedCards);
+                return FirstStepState(context, wightCards);
+            }
+            if (typeState == typeof(MoreThanTwoCardsLeftRoundState))
+            {
+                var wightCards = EvaluateWeightsInBaseState(context, this.Cards, this.usedCards);
+                return MoreThanTwoCardsState(context, wightCards);
+            }
+            if (typeState == typeof(TwoCardsLeftRoundState))
+            {
+                var wightCards = EvaluateWeightsInBaseState(context, this.Cards, this.usedCards);
+                return TwoCardLeft(context, wightCards);
+            }
             if (typeState == typeof (FinalRoundState) && context.CardsLeftInDeck>0)
             {
-                ClosedState(context, )
+                var wightCards = EvaluateWeightsInClosedState(context, this.Cards, this.usedCards, context.FirstPlayedCard);
+                return ClosedState(context, wightCards);
             }
-           
+            if (typeState == typeof(FinalRoundState))
+            {
+                var wightCards = EvaluateWeightsInClosedState(context, this.Cards, this.usedCards, context.FirstPlayedCard);
+                return ClosedState(context, wightCards);
+            }
 
-            return null;
+            var wightCardsMore = EvaluateWeightsInBaseState(context, this.Cards, this.usedCards);
+            return MoreThanTwoCardsState(context, wightCards);
         }
 
         public override string Name

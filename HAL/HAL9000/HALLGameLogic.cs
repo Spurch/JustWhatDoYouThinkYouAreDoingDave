@@ -1,5 +1,4 @@
-﻿using HAL9000.HALLogic;
-namespace HAL9000
+﻿namespace HAL9000
 {
     using System;
     using System.Collections.Generic;
@@ -9,6 +8,8 @@ namespace HAL9000
     using System.Collections.Generic;
     using System.Linq;
     using Santase.Logic.Cards;
+    using HALLogic;
+    using Extensions;
 
     public partial class HAL9000
     {
@@ -61,7 +62,7 @@ namespace HAL9000
                                     select x).FirstOrDefault();
                     if (somecard == null)
                     {
-                        if (TrumpsInCurrentHand(context) >= Constants.COUNTTRUMPMORETHANCANGETWITHTRUMP)
+                        if (GameStatistics.TrumpsInCurrentHand(this.Cards, context) >= Constants.COUNTTRUMPMORETHANCANGETWITHTRUMP)
                         {
                             if (HaveCardInHand(CardType.Jack, trumpSuit))
                             {
@@ -120,7 +121,7 @@ namespace HAL9000
                                 select x).FirstOrDefault();
                 if (somecard == null)
                 {
-                    if (TrumpsInCurrentHand(context) > Constants.COUNTTRUMPMORETHANCANGETWITHTRUMP)
+                    if (GameStatistics.TrumpsInCurrentHand(this.Cards, context) > Constants.COUNTTRUMPMORETHANCANGETWITHTRUMP)
                     {
                         if (HaveCardInHand(CardType.Jack, trumpSuit))
                         {
@@ -151,7 +152,7 @@ namespace HAL9000
                 }
                 else
                 {
-                    if (oponentTrump == null)
+                    if (GameStatistics.HowManyTrumpCardsHasTheOpponent (this.Cards, this.usedCards, context) == null)
                     {
                         var somecard = sortedWight.Last(x => x.Key.Suit != trumpSuit).Key;
                         turnCard = somecard;
@@ -160,7 +161,7 @@ namespace HAL9000
                             turnCard = hightCard;
                         }
                     }
-                    if (oponentTrumpNumber <= oureTrumpNumber)
+                    if (GameStatistics.HowManyTrumpCardsHasTheOpponent(this.Cards, this.usedCards, context) <= GameStatistics.TrumpsInCurrentHand(this.Cards, context))
                     {
                         if (wehavetrumpbig)
                         {
@@ -183,7 +184,7 @@ namespace HAL9000
                         }
 
                     }
-                    if (oponentTrumpNumber > oureTrumpNumber)
+                    if (GameStatistics.HowManyTrumpCardsHasTheOpponent(this.Cards, this.usedCards, context) > GameStatistics.TrumpsInCurrentHand(this.Cards, context))
                     {
                         if (wehavesuitbig)
                         {

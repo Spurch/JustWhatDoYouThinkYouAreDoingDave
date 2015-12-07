@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using HAL9000.HALLogic;
-
-namespace HAL9000.Extensions
+﻿namespace HAL9000.Extensions
 {
     using System.Linq;
     using Santase.Logic.Cards;
     using Santase.Logic.Players;
+    using HALLogic;
+    using System.Collections.Generic;
 
     public partial class WeightsCalculations
     {
@@ -26,7 +25,7 @@ namespace HAL9000.Extensions
         /// </summary>
         /// <param name="context">Current PlayerTurnContext</param>
         /// <returns>Returns the current number of trumps or 0 if none.</returns>
-        public int TrumpsInCurrentHand(ICollection<Card> cards, PlayerTurnContext context)
+        public static int TrumpsInCurrentHand(ICollection<Card> cards, PlayerTurnContext context)
         {
             return cards.Select(x => x.Suit == context.TrumpCard.Suit).Count();
         }
@@ -38,7 +37,7 @@ namespace HAL9000.Extensions
         /// <param name="usedCards"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        public int HowManyTrumpCardsHasTheOpponent(ICollection<Card> cards, IDictionary<CardSuit, List<Card>> usedCards, PlayerTurnContext context, bool isItClosed = true)
+        public static int HowManyTrumpCardsHasTheOpponent(ICollection<Card> cards, IDictionary<CardSuit, List<Card>> usedCards, PlayerTurnContext context, bool isItClosed = true)
         {
             var ourTrumpCards = TrumpsInCurrentHand(cards, context);
             var playedTrumps = TrumpCardsInGraveyard(usedCards, context);
@@ -55,7 +54,7 @@ namespace HAL9000.Extensions
         /// <param name="cards"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        public int TrumpCardsInGraveyard(IDictionary<CardSuit, List<Card>> cards, PlayerTurnContext context)
+        public static int TrumpCardsInGraveyard(IDictionary<CardSuit, List<Card>> cards, PlayerTurnContext context)
         {
             var trumpsAlreadyPlayed = cards[context.TrumpCard.Suit].Count;
 
