@@ -9,7 +9,7 @@
     /// <summary>
     /// 
     /// </summary>
-    public class WeightsCalculations
+    public partial class WeightsCalculations
     {
         private static IDictionary<Card, double> cardWeights;
         private static IDictionary<CardSuit, List<Card>> usedCardsInGame;
@@ -37,6 +37,7 @@
                 cardWeights[new Card((CardSuit)i, CardType.Nine)] = 0;
             }
 
+            InitializeStatistics();
         }
 
         /// <summary>
