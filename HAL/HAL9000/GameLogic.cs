@@ -96,7 +96,7 @@
                     }
                 }
             }
-            UpdateUsedCardsCollections(turnCard);
+            playerHelper.UpdateUsedCardsCollections(turnCard, usedCards);
             return PlayCard(turnCard);
         }
         private PlayerAction MoreThanTwoCardsState(PlayerTurnContext context, IDictionary<Card, double> weightCards)
@@ -127,9 +127,9 @@
                     {
                         if (CardsEvaluation.TrumpsInCurrentHand(this.Cards, context) >= Constants.AmountOfTrumpsToAllowUsToUseThem)
                         {
-                            if (HaveCardInHand(CardType.Jack, trumpSuit))
+                            if (playerHelper.HaveCardInHand(CardType.Jack, trumpSuit, possibleCardsToPlay))
                             {
-                                var cardTrum = GetCardFromHand(CardType.Jack, trumpSuit);
+                                var cardTrum = playerHelper.GetCardFromHand(CardType.Jack, trumpSuit, possibleCardsToPlay);
                                 turnCard = cardTrum;
                             }
                         }
@@ -151,13 +151,13 @@
 
                 if (oponentCardValue < Constants.ValueThatWeCanGetWithTen && oponentCardSuit != trumpSuit)
 
-                    if (HaveLonely10FromSuit(oponentCardSuit) && oponentCardValue < Constants.ValueThatWeCanGetWithTen && oponentCardSuit != trumpSuit)
+                    if (playerHelper.HaveLonely10FromSuit(oponentCardSuit, possibleCardsToPlay) && oponentCardValue < Constants.ValueThatWeCanGetWithTen && oponentCardSuit != trumpSuit)
 
                     {
-                        turnCard = GetCardFromHand(CardType.Ten, oponentCardSuit);
+                        turnCard = playerHelper.GetCardFromHand(CardType.Ten, oponentCardSuit, this.possibleCardsToPlay);
                     }
             }
-            UpdateUsedCardsCollections(turnCard);
+            playerHelper.UpdateUsedCardsCollections(turnCard, this.usedCards);
             return PlayCard(turnCard);
         }
 
@@ -187,15 +187,15 @@
                 {
                     if (CardsEvaluation.TrumpsInCurrentHand(this.Cards, context) > Constants.AmountOfTrumpsToAllowUsToUseThem)
                     {
-                        if (HaveCardInHand(CardType.Jack, trumpSuit))
+                        if (playerHelper.HaveCardInHand(CardType.Jack, trumpSuit, possibleCardsToPlay))
                         {
-                            var cardTrum = GetCardFromHand(CardType.Jack, trumpSuit);
+                            var cardTrum = playerHelper.GetCardFromHand(CardType.Jack, trumpSuit, possibleCardsToPlay);
                             turnCard = cardTrum;
                         }
                     }
                 }
             }
-            UpdateUsedCardsCollections(turnCard);
+            playerHelper.UpdateUsedCardsCollections(turnCard, usedCards);
             return PlayCard(turnCard);
         }
         private PlayerAction ClosedState(PlayerTurnContext context, IDictionary<Card, double> weightCards)
@@ -228,7 +228,7 @@
                     }
                     if (CardsEvaluation.HowManyTrumpCardsHasTheOpponent(this.Cards, usedCards, context) <= CardsEvaluation.TrumpsInCurrentHand(this.Cards, context))
                     {
-                        if (DoWeHaveAMajorTrump(context))
+                        if (playerHelper.DoWeHaveAMajorTrump(context, possibleCardsToPlay))
                         {
                             var somecard = sortedWight.LastOrDefault(x => x.Key.Suit == trumpSuit).Key;
                             turnCard = somecard;
@@ -260,7 +260,7 @@
                     //}
                 }
             }
-            UpdateUsedCardsCollections(turnCard);
+            playerHelper.UpdateUsedCardsCollections(turnCard, usedCards);
             return PlayCard(turnCard);
         }
 

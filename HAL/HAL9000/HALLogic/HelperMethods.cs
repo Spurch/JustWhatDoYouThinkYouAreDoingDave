@@ -11,9 +11,7 @@
     /// </summary>
     public class HelperMethods
     {
-        //public HelperMethods() { }
-
-        private void UpdateUsedCardsCollections(Card playedCard, IDictionary<CardSuit, List<Card>> usedCards)
+        public void UpdateUsedCardsCollections(Card playedCard, IDictionary<CardSuit, List<Card>> usedCards)
         {
             if (usedCards == null)
             {

@@ -8,8 +8,7 @@
 
     public partial class HAL9000 : BasePlayer
     {
-        private HelperMethods =
-        new HelperMethods();
+        private static HelperMethods playerHelper = new HelperMethods();
         private readonly string name = "HelperMethods";
         private ICollection<Card> possibleCardsToPlay = new List<Card>();
         private Dictionary<CardSuit, List<Card>> usedCards = new Dictionary<CardSuit, List<Card>>();
@@ -30,7 +29,7 @@
                 oponentCardValue = context.FirstPlayedCard.GetValue();
             }
 
-            queensFor20Or40 = this.CheckForTwentyOrForty(context);
+            queensFor20Or40 = this.CheckForTwentyOrForty(context, this.possibleCardsToPlay);
 
             if (this.PlayerActionValidator.IsValid(PlayerAction.ChangeTrump(), context, this.Cards))
             {
@@ -87,10 +86,10 @@
         /// <param name="context"></param>
         public override void EndTurn(PlayerTurnContext context)
         {
-            this.UpdateUsedCardsCollections(context.FirstPlayedCard);
+            playerHelper.UpdateUsedCardsCollections(context.FirstPlayedCard, this.usedCards);
             if (context.SecondPlayedCard != null)
             {
-                this.UpdateUsedCardsCollections(context.SecondPlayedCard);
+                playerHelper.UpdateUsedCardsCollections(context.SecondPlayedCard, this.usedCards);
             }
         }
 
@@ -99,7 +98,7 @@
         {
             if (this.PlayerActionValidator.IsValid(PlayerAction.CloseGame(), context, this.Cards))
             {
-                if (CardsEvaluation.TrumpsInCurrentHand(currentPossibleCardsToPlay, context) >= 2 && (CurrentHandPoints(context) >= 50))
+                if (CardsEvaluation.TrumpsInCurrentHand(currentPossibleCardsToPlay, context) >= 2 && (CurrentHandPointsForPlayer(context, this.Cards) >= 50))
                 {
                     return true;
                 }
