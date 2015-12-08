@@ -9,7 +9,7 @@
     /// <summary>
     /// Class that is used to calculate the weights of the cards in the game.
     /// </summary>
-    public partial class WeightsCalculations
+    public partial class CardsEvaluation
     {
         private static IDictionary<Card, double> cardWeights = new Dictionary<Card, double>();
         private static List<Card> majorCards = new List<Card>();
@@ -17,7 +17,7 @@
         /// <summary>
         /// 
         /// </summary>
-        static WeightsCalculations()
+        static CardsEvaluation()
         {
             for (int i = 0; i < 4; i++)
             {

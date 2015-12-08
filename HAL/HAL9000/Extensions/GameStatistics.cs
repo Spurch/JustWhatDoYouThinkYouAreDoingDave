@@ -6,7 +6,7 @@
     using HALLogic;
     using System.Collections.Generic;
 
-    public partial class WeightsCalculations
+    public partial class CardsEvaluation
     {
         private static void InitializeStatistics()
         {

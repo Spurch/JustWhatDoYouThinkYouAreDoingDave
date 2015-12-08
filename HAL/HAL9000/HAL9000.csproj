@@ -45,12 +45,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\GameStatistics.cs" />
-    <Compile Include="Extensions\WeightsCalculations.cs" />
+    <Compile Include="Extensions\CardsEvaluation.cs" />
     <Compile Include="HAL9000.cs" />
-    <Compile Include="HALLGameLogic.cs" />
-    <Compile Include="HALLogic\Common.cs" />
+    <Compile Include="GameLogic.cs" />
+    <Compile Include="HALLogic\HelperMethods.cs" />
     <Compile Include="HALLogic\Constants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StrategyEvaluation\PlayCardWhenAtHandAndRulesApply.cs" />
+    <Compile Include="StrategyEvaluation\PlayCardWhenAtHandAndRulesDontApply.cs" />
+    <Compile Include="StrategyEvaluation\PlayCardWhenNotAtHandAndRulesApply.cs" />
+    <Compile Include="StrategyEvaluation\PlayCardWhenNotAtHandAndRulesDontApply.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

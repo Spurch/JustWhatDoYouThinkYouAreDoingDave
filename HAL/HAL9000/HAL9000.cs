@@ -4,10 +4,13 @@
     using System.Collections.Generic;
     using Santase.Logic.Cards;
     using Extensions;
+    using HALLogic;
 
     public partial class HAL9000 : BasePlayer
     {
-        private readonly string name = "HAL9000";
+        private HelperMethods =
+        new HelperMethods();
+        private readonly string name = "HelperMethods";
         private ICollection<Card> possibleCardsToPlay = new List<Card>();
         private Dictionary<CardSuit, List<Card>> usedCards = new Dictionary<CardSuit, List<Card>>();
         private Card queensFor20Or40;
@@ -43,33 +46,33 @@
             }
             if (currentStateType == "StartRoundState")
             {
-                var wightCards = WeightsCalculations.EvaluateWeightsInBaseState(context, this.Cards, this.usedCards);
+                var wightCards = CardsEvaluation.EvaluateWeightsInBaseState(context, this.Cards, this.usedCards);
                 return FirstStepState(context, wightCards);
             }
             if (currentStateType == "MoreThanTwoCardsLeftRoundState")
             {
-                var wightCards = WeightsCalculations.EvaluateWeightsInBaseState(context, possibleCardsToPlay, this.usedCards);
+                var wightCards = CardsEvaluation.EvaluateWeightsInBaseState(context, possibleCardsToPlay, this.usedCards);
                 return MoreThanTwoCardsState(context, wightCards);
             }
             if (currentStateType == "TwoCardsLeftRoundState")
             {
-                var wightCards = WeightsCalculations.EvaluateWeightsInBaseState(context, possibleCardsToPlay, this.usedCards);
+                var wightCards = CardsEvaluation.EvaluateWeightsInBaseState(context, possibleCardsToPlay, this.usedCards);
                 return TwoCardLeft(context, wightCards);
             }
             if (currentStateType == "FinalRoundState" && context.CardsLeftInDeck > 0)
             {
-                var wightCards = WeightsCalculations.EvaluateWeightsInClosedState(context, possibleCardsToPlay, this.usedCards, context.FirstPlayedCard);
+                var wightCards = CardsEvaluation.EvaluateWeightsInClosedState(context, possibleCardsToPlay, this.usedCards, context.FirstPlayedCard);
                 return ClosedState(context, wightCards);
             }
             if (currentStateType == "FinalRoundState")
             {
-                var opponentHand = WeightsCalculations.GetOpponentHand(possibleCardsToPlay, usedCards);
-                var wightCards = WeightsCalculations.EvaluateWeightsInClosedState(context, possibleCardsToPlay, this.usedCards, context.FirstPlayedCard);
+                var opponentHand = CardsEvaluation.GetOpponentHand(possibleCardsToPlay, usedCards);
+                var wightCards = CardsEvaluation.EvaluateWeightsInClosedState(context, possibleCardsToPlay, this.usedCards, context.FirstPlayedCard);
                 //var wightCards = WeightsCalculations.EvaluateWeightsInFinalState(context, possibleCardsToPlay, this.usedCards, opponentHand);
                 return ClosedState(context, wightCards);
             }
 
-            var wightCardsMore = WeightsCalculations.EvaluateWeightsInBaseState(context, possibleCardsToPlay, usedCards);
+            var wightCardsMore = CardsEvaluation.EvaluateWeightsInBaseState(context, possibleCardsToPlay, usedCards);
             return FirstStepState(context, wightCardsMore);
         }
 
@@ -96,7 +99,7 @@
         {
             if (this.PlayerActionValidator.IsValid(PlayerAction.CloseGame(), context, this.Cards))
             {
-                if (WeightsCalculations.TrumpsInCurrentHand(currentPossibleCardsToPlay, context) >= 2 && (CurrentHandPoints(context) >= 50))
+                if (CardsEvaluation.TrumpsInCurrentHand(currentPossibleCardsToPlay, context) >= 2 && (CurrentHandPoints(context) >= 50))
                 {
                     return true;
                 }
